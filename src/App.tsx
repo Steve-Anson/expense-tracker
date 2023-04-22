@@ -3,15 +3,19 @@ import ExpenseList from "./components/ExpenseList";
 import ExpenseFilter from "./components/ExpenseFilter";
 import ExpenseForm from "./components/ExpenseForm";
 
+type Expense = {
+  id: number;
+  description: string;
+  amount: number;
+  category: string;
+};
+
+const arr: Expense[] = [];
+
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "Milk", amount: 10, category: "Groceries" },
-    { id: 2, description: "Cheese", amount: 20, category: "Groceries" },
-    { id: 3, description: "Butter", amount: 30, category: "Groceries" },
-    { id: 4, description: "Electricity", amount: 40, category: "Utilities" },
-  ]);
+  const [expenses, setExpenses] = useState(arr);
 
   const filteredExpenses = selectedCategory
     ? expenses.filter((expense) => expense.category === selectedCategory)
@@ -20,7 +24,11 @@ const App = () => {
   return (
     <div>
       <div className="mb-5">
-        <ExpenseForm></ExpenseForm>
+        <ExpenseForm
+          onSubmit={(expense) =>
+            setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])
+          }
+        ></ExpenseForm>
       </div>
 
       <div className="mb-3">
